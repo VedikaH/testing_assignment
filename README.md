@@ -82,5 +82,5 @@ Gemma-2-2b is a causal language model used to refine the test instructions. It r
 
 ## Screenshots
 
-Check the screenshots folder.
+Check the images folder, where each screenshot has its corresponding output called Testing.
 
