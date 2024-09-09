@@ -1,4 +1,4 @@
-
+import os
 import streamlit as st
 import torch
 from PIL import Image
@@ -99,8 +99,18 @@ def load_model_and_tokenizer(path):
 def load_gemma_model_and_tokenizer():
     quantization_config = BitsAndBytesConfig(load_in_8bit=True)
 
-    model = AutoModelForCausalLM.from_pretrained("google/gemma-2-2b-it", device_map="auto",token="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",quantization_config=quantization_config)
-    tokenizer = AutoTokenizer.from_pretrained("google/gemma-2-2b-it",token="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")
+    token = os.getenv("HUGGINGFACE_TOKEN")
+
+    if not token:
+        raise ValueError("Hugging Face token not found. Please set the 'HUGGINGFACE_TOKEN' environment variable.")
+
+    model = AutoModelForCausalLM.from_pretrained(
+        "google/gemma-2-2b-it",
+        device_map="auto",
+        token=token,
+        quantization_config=quantization_config
+    )
+    tokenizer = AutoTokenizer.from_pretrained("google/gemma-2-2b-it", token=token)
     return model, tokenizer
 
 def refine_instructions(gemma_model, gemma_tokenizer, original_instructions):
